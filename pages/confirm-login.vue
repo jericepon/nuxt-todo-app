@@ -10,7 +10,6 @@ const user = useSupabaseUser();
 const { login } = useAuthStore();
 
 watch(user, () => {
-  console.log(user.value);
   if (user.value) {
     login(user.value);
     return navigateTo("/");
