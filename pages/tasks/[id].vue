@@ -2,10 +2,10 @@
 import type { Task } from "~/types";
 
 useHead({
-  title: "Todo • New Task",
+  title: "Todo • Edit Task",
 });
 definePageMeta({
-  name: "new-task",
+  name: "edit-task",
   middleware: "auth",
   layout: "dashboard",
 });

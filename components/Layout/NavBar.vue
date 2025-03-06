@@ -11,7 +11,7 @@ const { user_profile } = useProfileStore();
 const { clear } = useClearOnLogout();
 
 const pageTitle = computed(() => {
-  return route.meta.name || "Task App";
+  return (route.meta.name || "Task App").replace(/-/g, " ");
 });
 
 const items = ref([

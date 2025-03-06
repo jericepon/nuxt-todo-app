@@ -24,6 +24,10 @@ defineProps({
 
 const emit = defineEmits(["select"]);
 const selected = ref<Task[]>([]);
+const sort = ref<{ column: string; direction: "desc" | "asc" }>({
+  column: "created_at",
+  direction: "desc",
+});
 
 function select(row: Task) {
   emit("select");
@@ -44,6 +48,20 @@ function formatTimestamp(timestamp: string): string {
 
 const Priority: { [key: number]: string } = { 1: "Low", 2: "Medium", 3: "High" };
 const PriorityColor: { [key: number]: BadgeColor } = { 1: "green", 2: "yellow", 3: "red" };
+
+const items = (row: Task) => [
+  [
+    {
+      label: "Edit",
+      icon: "i-heroicons-pencil-square-20-solid",
+      click: () => navigateTo(`/tasks/${row.id}`),
+    },
+    {
+      label: "Duplicate",
+      icon: "i-heroicons-document-duplicate-20-solid",
+    },
+  ],
+];
 </script>
 
 <template>
@@ -52,6 +70,7 @@ const PriorityColor: { [key: number]: BadgeColor } = { 1: "green", 2: "yellow", 
       :loading
       :rows
       :columns
+      v-model:sort="sort"
       :empty-state="{ icon: 'i-heroicons-circle-stack-20-solid', label: 'No items.' }"
       v-model="selected"
       @select="select"
@@ -78,6 +97,12 @@ const PriorityColor: { [key: number]: BadgeColor } = { 1: "green", 2: "yellow", 
 
       <template #created_at-data="{ row }">
         {{ formatTimestamp(row.created_at) }}
+      </template>
+
+      <template #actions-data="{ row }">
+        <UDropdown :items="items(row)">
+          <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+        </UDropdown>
       </template>
     </UTable>
   </UCard>

@@ -11,28 +11,23 @@ definePageMeta({
   layout: "dashboard",
 });
 
-const loading = ref(false);
-
 const columns = [
-  { key: "title", label: "Title" },
-  { key: "description", label: "Description" },
-  { key: "completed", label: "Completed" },
-  { key: "priority", label: "Priority" },
-  { key: "created_at", label: "Created At" },
+  { key: "title", label: "Title", sortable: true },
+  { key: "description", label: "Description", sortable: true },
+  { key: "completed", label: "Completed", sortable: true },
+  { key: "priority", label: "Priority", sortable: true },
+  { key: "created_at", label: "Created At", sortable: true },
+  { key: "actions", label: "" },
 ] as Column[];
 
 const { data: tasks } = useAsyncData(
   "tasks",
   async () => {
-    loading.value = true;
-
     const {
       data: { value },
     } = await useFetch("/api/getAllTasks");
     const result = value?.data as Task[];
-    if (tasks.value) {
-      loading.value = false;
-    }
+
     return result;
   },
   {
@@ -52,7 +47,7 @@ const { data: tasks } = useAsyncData(
         icon="i-heroicons-plus"
       />
     </div>
-    <TasksTable class="col-span-3" :columns :loading :rows="tasks || []" :selected="[]" />
+    <TasksTable class="col-span-3" :columns :rows="tasks || []" :selected="[]" />
   </div>
 </template>
 
