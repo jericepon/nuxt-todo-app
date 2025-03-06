@@ -40,7 +40,7 @@ const { data: tasks, refresh } = useAsyncData(
 
 const handleDuplicate = async (task: Task) => {
   const { title, description, priority, completed } = task;
-  const body = { description, priority, completed, title: `${title} (Copy)` };
+  const body = { description, priority, completed, title: `(Copy) of ${title}` };
 
   const { data, error } = await $fetch("/api/createTask", { method: "POST", body });
   if (error) {
