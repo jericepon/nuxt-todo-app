@@ -6,7 +6,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      BASE_URL: process.env.BASE_URL || 'http://localhost:3000',
+      BASE_URL: process.env.BASE_URL,
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_KEY: process.env.SUPABASE_KEY,
     },
@@ -19,5 +19,5 @@ export default defineNuxtConfig({
       login: '/login',
       callback: '/confirm-login',
     },
-  }
+  },
 })

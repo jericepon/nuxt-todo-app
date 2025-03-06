@@ -16,6 +16,7 @@ const user = useSupabaseUser();
 
 const isSignUp = ref(false);
 const redirectTo = `${useRuntimeConfig().public.BASE_URL}/confirm-login`;
+console.log(redirectTo);
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
