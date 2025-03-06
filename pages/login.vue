@@ -12,11 +12,10 @@ definePageMeta({
 });
 
 const client = useSupabaseClient();
-const user = useSupabaseUser();
-
+const { login } = useAuthStore();
+const { notify } = useNotifications();
 const isSignUp = ref(false);
 const redirectTo = `${useRuntimeConfig().public.BASE_URL}/confirm-login`;
-console.log(redirectTo);
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
@@ -31,25 +30,40 @@ const state = reactive<z.infer<typeof schema>>({
 const oAuthLogin = async () => {
   const { data, error } = await client.auth.signInWithOAuth({
     provider: "google",
-    options: {
-      redirectTo,
-    },
+    options: { redirectTo },
   });
 };
 
-const onSubmit = async () => {
-  if (isSignUp) {
-    const { data, error } = await client.auth.signUp({
-      email: state.email,
-      password: state.password,
-    });
-  } else {
-    const { data, error } = await client.auth.signInWithPassword({
-      email: state.email,
-      password: state.password,
-    });
-  }
+const handleSignUp = async () => {
+  const { data, error } = await client.auth.signUp({
+    email: state.email,
+    password: state.password,
+  });
+
+  error && notify({ type: "error", description: error.message });
 };
+
+const handleSignInWithPassword = async () => {
+  const { data, error } = await client.auth.signInWithPassword({
+    email: state.email,
+    password: state.password,
+  });
+
+  error && notify({ type: "error", description: error.message });
+};
+
+const onSubmit = async () => {
+  isSignUp.value ? handleSignUp() : handleSignInWithPassword();
+};
+
+client.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_IN") {
+    if (session?.user) {
+      login(session.user);
+      navigateTo("/");
+    }
+  }
+});
 </script>
 <template>
   <UCard class="min-w-80">

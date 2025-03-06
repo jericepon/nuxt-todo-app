@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
 import { computed } from "vue";
+import { useProfileStore } from "~/store/profile";
 
 const route = useRoute();
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
+const { user_profile } = useProfileStore();
 
 const { clear } = useClearOnLogout();
 
@@ -62,11 +64,16 @@ const items = ref([
         :ui="{ item: { disabled: 'cursor-text select-text' } }"
         :popper="{ placement: 'bottom-start' }"
       >
-        <UAvatar :src="user?.user_metadata.picture" :alt="user?.user_metadata.name" />
+        <UAvatar
+          :src="user?.user_metadata.picture || user_profile?.avatar_url"
+          :alt="user?.user_metadata.name || user_profile?.name"
+        />
 
         <template #account="{ item }">
           <div class="text-left">
-            <p class="font-medium text-gray-900 dark:text-white">{{ user?.user_metadata.name }}</p>
+            <p class="font-medium text-gray-900 dark:text-white">
+              {{ user?.user_metadata.name || user_profile?.name }}
+            </p>
           </div>
         </template>
 

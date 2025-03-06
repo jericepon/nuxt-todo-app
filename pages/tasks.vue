@@ -11,6 +11,7 @@ useHead({
 definePageMeta({
   name: "tasks",
   middleware: "auth",
+  layout: "dashboard",
 });
 
 const { data: tasks, error } = useAsyncData("tasks", async () => {

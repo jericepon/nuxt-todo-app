@@ -1,6 +1,6 @@
-export function useAuthNotifications() {
+export function useNotifications() {
   const toast = useToast();
-  
+
   type Notification = {
     description: string;
     icon?: string;

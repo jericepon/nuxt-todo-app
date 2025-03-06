@@ -14,8 +14,15 @@ export const useAuthStore = defineStore('auth', {
   }),
   actions: {
     login(user: User | null) {
+      const { addProfile } = useProfileStore();
       this.user = user ? { ...user } : null;
       this.isAuthenticated = true;
+      addProfile({
+        user_id: user?.id,
+        name: user?.user_metadata.name,
+        email: user?.user_metadata.email,
+        avatar_url: user?.user_metadata.avatar_url,
+      });
     },
     clearAuth() {
       this.isAuthenticated = false;

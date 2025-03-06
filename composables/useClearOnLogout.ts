@@ -7,6 +7,8 @@ export function useClearOnLogout() {
   const { clearAuth } = useAuthStore();
 
   const clear = () => {
+    console.log('Clearing profile and auth data');
+    
     clearProfile();
     clearAuth();
   }

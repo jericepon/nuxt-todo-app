@@ -11,6 +11,7 @@ useHead({
 definePageMeta({
   name: "dashboard",
   middleware: "auth",
+  layout: "dashboard",
 });
 </script>
 

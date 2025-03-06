@@ -5,6 +5,7 @@ useHead({
 definePageMeta({
   name: "analytics",
   middleware: "auth",
+  layout: "dashboard",
 });
 </script>
 

@@ -1,14 +1,10 @@
 body,
 html,
 #__nuxt {
-  @apply max-h-screen h-full;
+  @apply min-h-screen;
 }
 
 #__nuxt {
-  @apply flex flex-grow;
-}
-
-#__nuxt > div {
   @apply flex flex-grow;
 }
 
