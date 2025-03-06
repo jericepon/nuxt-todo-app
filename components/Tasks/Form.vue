@@ -1,11 +1,17 @@
 <script lang="ts" setup>
 import { z } from "zod";
+import type { Task } from "~/types";
 
 const emit = defineEmits(["submit"]);
-defineProps({
+
+const props = defineProps({
   submitting: {
     type: Boolean,
     default: false,
+  },
+  task: {
+    type: Object as PropType<Task | null>,
+    default: () => null,
   },
 });
 const schema = z.object({
@@ -31,10 +37,28 @@ const priority = [
 const setPriority = (value: number) => {
   state.priority = parseInt(value.toString());
 };
+
+watch(
+  () => props.task,
+  (task) => {
+    if (task) {
+      state.title = task.title;
+      state.description = task.description;
+      state.priority = task.priority;
+      state.completed = task.completed;
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-  <UForm :schema="schema" :state="state" class="space-y-4" @submit="emit('submit', state)">
+  <UForm
+    :schema="schema"
+    :state="state"
+    class="space-y-4"
+    @submit="emit('submit', { ...state, id: task?.id })"
+  >
     <UFormGroup label="Title" name="title">
       <UInput v-model="state.title" />
     </UFormGroup>
@@ -53,8 +77,11 @@ const setPriority = (value: number) => {
     <UFormGroup name="completed">
       <UCheckbox v-model="state.completed" label="Completed" />
     </UFormGroup>
-    <div class="flex w-full justify-end">
-      <UButton type="submit" :loading="submitting"> Create </UButton>
+    <div class="flex w-full justify-end space-x-4">
+      <UButton color="gray" variant="solid" to="/tasks">
+        Cancel
+      </UButton>
+      <UButton type="submit" :loading="submitting"> {{ task ? "Update" : "Create" }} </UButton>
     </div>
   </UForm>
 </template>
