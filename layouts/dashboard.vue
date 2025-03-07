@@ -2,8 +2,9 @@
 import "~/assets/css/main.css";
 import { useProfileStore } from "~/store/profile";
 
+const client = useSupabaseClient();
 const user = useSupabaseUser();
-const { getProfile } = useProfileStore();
+const { setProfile } = useProfileStore();
 
 let sideBarOptions = {
   onToggleSideBar: (isOpen: boolean) => {
@@ -12,8 +13,21 @@ let sideBarOptions = {
   },
 };
 
-onMounted(async () => {
-  if (user.value) await getProfile(user.value?.id);
+const {
+  data: profile,
+  pending,
+  refresh,
+} = await useAsyncData("profile", async () => {
+  const { data } = await client
+    .from("profiles")
+    .select("*")
+    .eq("user_id", user?.value?.id || "")
+    .single();
+  return data;
+});
+
+watchEffect(() => {
+  if (profile.value) setProfile(profile.value);
 });
 </script>
 

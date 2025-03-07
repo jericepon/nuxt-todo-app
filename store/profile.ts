@@ -24,7 +24,7 @@ export const useProfileStore = defineStore('profile', {
       // Check if the current exists in the profiles table
       this.checkUserExists(profile.email).then(({ data }) => {
         // If the user exists, do nothing
-        if (data && data.length) return;
+        if (data?.length) return;
         // Otherwise, add the user to the profiles table
         supabase
           .from('profiles')
@@ -44,15 +44,13 @@ export const useProfileStore = defineStore('profile', {
       const supabase = useSupabaseClient();
       const { data, error } = await supabase
         .from('profiles')
-        .select()
+        .select('*')
         .eq('email', email);
 
       return { data, error };
     },
-    async getProfile(user_id: string) {
-      const supabase = useSupabaseClient();
-      const { data, error } = await supabase.from('profiles').select("*").eq('user_id', user_id);
-      data?.length && (this.user_profile = data[0]);
+    setProfile(user_profile: UserProfile) {
+      this.user_profile = user_profile;
     },
     handleProfieNofication(data: any) {
       const { notify } = useNotifications();

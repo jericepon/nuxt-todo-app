@@ -17,7 +17,6 @@ definePageMeta({
 
 <template>
   <div class="w-full grid grid-cols-3 gap-4">
-    <ColorModeBtn />
     <DashboardWelcomeCard />
     <USkeleton class="min-h-[200px]" :ui="{}" v-for="i in Array(10)" />
   </div>

@@ -7,19 +7,26 @@ const route = useRoute();
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const { user_profile } = useProfileStore();
+const colorMode = useColorMode();
 
 const { clear } = useClearOnLogout();
 
 const pageTitle = computed(() => {
   return (route.meta.name || "Task App").replace(/-/g, " ");
 });
+const isDark = computed({
+  get() {
+    return colorMode.value === "dark";
+  },
+  set() {
+    colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
+  },
+});
 
 const items = ref([
   [
     { label: "ben@example.com", slot: "account", disabled: true },
     { label: "Divider", icon: "i-heroicons-user", slot: "divider", class: "p-0", disabled: true },
-    { label: "Profile", icon: "i-heroicons-user", to: "/profile" },
-    { label: "Settings", icon: "i-heroicons-cog", to: "/settings" },
     {
       label: "Divider",
       icon: "i-heroicons-user",
@@ -27,7 +34,6 @@ const items = ref([
       class: "p-0 md:hidden",
       disabled: true,
     },
-    { label: "Dashboard", icon: "i-heroicons-home", class: "md:hidden", to: "/" },
     {
       label: "Tasks",
       icon: "i-heroicons-clipboard-document-list",
@@ -35,6 +41,8 @@ const items = ref([
       to: "/tasks",
     },
     { label: "Analytics", icon: "i-heroicons-chart-bar", class: "md:hidden", to: "/analytics" },
+    { label: "Settings", icon: "i-heroicons-cog", to: "/settings" },
+    { label: "", icon: "i-lucide-sun-moon", slot: "color-mode" },
     { label: "Divider", icon: "i-heroicons-user", slot: "divider", class: "p-0", disabled: true },
     {
       label: "Sign out",
@@ -66,13 +74,13 @@ const items = ref([
       >
         <UAvatar
           :src="user?.user_metadata.picture || user_profile?.avatar_url"
-          :alt="user?.user_metadata.name || user_profile?.name"
+          :alt="user_profile?.name"
         />
 
         <template #account="{ item }">
           <div class="text-left">
             <p class="font-medium text-gray-900 dark:text-white">
-              {{ user?.user_metadata.name || user_profile?.name }}
+              {{ user_profile?.name }}
             </p>
           </div>
         </template>
@@ -87,6 +95,16 @@ const items = ref([
             :name="item.icon"
             class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
           />
+        </template>
+
+        <template #color-mode="{ item }">
+          <div class="w-full flex items-center justify-between" @click="isDark = !isDark">
+            <span class="truncate">{{ isDark ? "Light" : "Dark" }}</span>
+            <UIcon
+              :name="`${isDark ? 'i-lucide-sun' : 'i-lucide-moon'}`"
+              class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
+            />
+          </div>
         </template>
       </UDropdown>
     </nav>
