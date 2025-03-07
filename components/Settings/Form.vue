@@ -41,7 +41,7 @@ watch(
   (profile) => {
     if (profile) {
       state.name = profile.name;
-      state.avatar_url = profile.avatar_url;
+      state.avatar_url = "";
     }
   },
   { immediate: true }
