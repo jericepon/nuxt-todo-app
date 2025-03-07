@@ -59,8 +59,7 @@ const handleDelete = async (id: Task) => {
     return;
   }
 
-  notify({ type: "success", description: "Task deleted successfully" });
-  await refresh();
+  await refresh().then(() => notify({ type: "success", description: "Task deleted successfully" }));
 };
 
 const handleTaskComplete = async (task: Task) => {
@@ -74,8 +73,7 @@ const handleTaskComplete = async (task: Task) => {
     return;
   }
 
-  notify({ type: "success", description: "Task updated successfully" });
-  await refresh();
+  await refresh().then(() => notify({ type: "success", description: "Task updated successfully" }));
 };
 </script>
 

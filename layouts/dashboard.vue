@@ -23,7 +23,7 @@ onMounted(async () => {
     class="fixed top-0 z-10 left-auto right-0 w-full max-w-[var(--base-layout-width)] transition-all"
   />
   <main
-    class="flex flex-grow flex-col min-h-screen mt-[48px] ml-auto w-full max-w-[var(--base-layout-width)] h-full dark:bg-gray-900 transition-all"
+    class="flex flex-grow flex-col mt-[48px] ml-auto w-full max-w-[var(--base-layout-width)] dark:bg-gray-900 transition-all"
   >
     <UContainer class="w-full py-4 sm:pt-6 lg:pt-8">
       <slot />
