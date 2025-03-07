@@ -14,9 +14,9 @@ definePageMeta({
 const client = useSupabaseClient();
 const { login } = useAuthStore();
 const { notify } = useNotifications();
+const { origin } = useRequestURL();
 const isSignUp = ref(false);
-const redirectTo = `${useRuntimeConfig().public.BASE_URL}/confirm-login`;
-
+const redirectTo = `${origin}/confirm-login`;
 const schema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(8, "Must be at least 8 characters"),
@@ -28,7 +28,7 @@ const state = reactive<z.infer<typeof schema>>({
 });
 
 const oAuthLogin = async () => {
-  const { data, error } = await client.auth.signInWithOAuth({
+  client.auth.signInWithOAuth({
     provider: "google",
     options: { redirectTo },
   });

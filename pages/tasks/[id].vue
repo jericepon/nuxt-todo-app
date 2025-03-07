@@ -16,7 +16,7 @@ const route = useRoute();
 const taskToEdit = ref<Task | null>(null);
 
 const onSubmit = async (task: Task) => {
-  const { data, error } = await $fetch("/api/updateTask", { method: "POST", body: task });
+  const { data, error } = await $fetch("/api/task/update", { method: "POST", body: task });
   if (error) {
     notify({ type: "error", description: error.message });
     return;

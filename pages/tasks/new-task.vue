@@ -13,7 +13,7 @@ definePageMeta({
 const { notify } = useNotifications();
 
 const onSubmit = async (task: Task) => {
-  const { data, error } = await $fetch("/api/createTask", { method: "POST", body: task });
+  const { data, error } = await $fetch("/api/task/create", { method: "POST", body: task });
   if (error) {
     notify({ type: "error", description: error.message });
     return;

@@ -6,10 +6,9 @@ definePageMeta({
 });
 
 const user = useSupabaseUser();
-
 const { login } = useAuthStore();
 
-watch(user, () => {
+watchEffect(() => {
   if (user.value) {
     login(user.value);
     return navigateTo("/");

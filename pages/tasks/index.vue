@@ -28,7 +28,7 @@ const { data: tasks, refresh } = useAsyncData(
   async () => {
     const {
       data: { value },
-    } = await useFetch("/api/getAllTasks");
+    } = await useFetch("/api/task/getTasks");
 
     return value;
   },
@@ -42,7 +42,7 @@ const handleDuplicate = async (task: Task) => {
   const { title, description, priority, completed } = task;
   const body = { description, priority, completed, title: `(Copy) of ${title}` };
 
-  const { data, error } = await $fetch("/api/createTask", { method: "POST", body });
+  const { data, error } = await $fetch("/api/task/create", { method: "POST", body });
   if (error) {
     notify({ type: "error", description: error.message });
     return;
@@ -52,7 +52,7 @@ const handleDuplicate = async (task: Task) => {
 };
 
 const handleDelete = async (id: Task) => {
-  const { data, error } = await $fetch("/api/deleteTask", { method: "POST", body: { id } });
+  const { data, error } = await $fetch("/api/task/delete", { method: "POST", body: { id } });
 
   if (error) {
     notify({ type: "error", description: error.message });
@@ -63,7 +63,7 @@ const handleDelete = async (id: Task) => {
 };
 
 const handleTaskComplete = async (task: Task) => {
-  const { data, error } = await $fetch("/api/updateTask", {
+  const { data, error } = await $fetch("/api/task/update", {
     method: "POST",
     body: { ...task, completed: !task.completed },
   });
