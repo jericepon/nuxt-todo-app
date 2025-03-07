@@ -1,75 +1,117 @@
-# Nuxt Minimal Starter
+# Todo App
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is a Todo application built with Nuxt 3, Tailwind CSS, and Supabase. The application allows users to manage their tasks efficiently with a modern and responsive UI.
 
-## Setup
+## Table of Contents
 
-Make sure to install dependencies:
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
-```bash
-# npm
-npm install
+## Features
 
-# pnpm
-pnpm install
+- User authentication with Supabase
+- Task management (create, update, delete tasks)
+- Responsive design with Tailwind CSS
+- State management with Pinia
+- Persistent state with `pinia-plugin-persistedstate`
+- Server-side rendering and static site generation with Nuxt 3
 
-# yarn
-yarn install
+## Installation
 
-# bun
-bun install
-```
+1. Clone the repository:
 
-## Development Server
+   ```sh
+   git clone https://github.com/yourusername/todo-app.git
+   cd todo-app
+   ```
 
-Start the development server on `http://localhost:3000`:
+2. Install dependencies:
 
-```bash
-# npm
+   ```sh
+   npm install
+   ```
+
+3. Create a `.env` file in the root directory and add your environment variables:
+
+   ```env
+   BASE_URL=http://localhost:3000
+   SUPABASE_URL=https://your-supabase-url.supabase.co
+   SUPABASE_KEY=your-supabase-key
+   ```
+
+## Configuration
+
+The configuration for the project is defined in the `nuxt.config.ts` file. Here you can customize various settings such as modules, runtime configuration, and more.
+
+## Usage
+
+To start the development server, run:
+
+```sh
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+To build the project for production, run:
 
-Build the application for production:
-
-```bash
-# npm
+```sh
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+To preview the production build, run:
 
-```bash
-# npm
+```sh
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Project Structure
+
+```markdown
+.env
+.gitignore
+[nuxt.config.ts](http://_vscodecontentref_/1)
+[package.json](http://_vscodecontentref_/2)
+[README.md](http://_vscodecontentref_/3)
+[tsconfig.json](http://_vscodecontentref_/4)
+.nuxt/
+  [app.config.mjs](http://_vscodecontentref_/5)
+  components.d.ts
+  [imports.d.ts](http://_vscodecontentref_/6)
+  [nitro.json](http://_vscodecontentref_/7)
+  nuxt-icon-client-bundle.mjs
+  nuxt-icon-server-bundle.mjs
+  [nuxt.d.ts](http://_vscodecontentref_/8)
+  [nuxt.json](http://_vscodecontentref_/9)
+  [nuxtui-tailwind.config.mjs](http://_vscodecontentref_/10)
+  [tsconfig.json](http://_vscodecontentref_/11)
+  tsconfig.server.json
+  ui.colors.d.ts
+  ui.colors.mjs
+  cache/
+  dev/
+  manifest/
+  schema/
+  tailwind/
+  types/
+.output/
+public/
+assets/
+  css/
+  img/
+components/
+  ...
+composables/
+  ...
+layouts/
+  ...
+middleware/
+pages/
+public/
+server/
+store/
+types/
+```
