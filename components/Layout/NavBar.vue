@@ -72,10 +72,7 @@ const items = ref([
         :ui="{ item: { disabled: 'cursor-text select-text' } }"
         :popper="{ placement: 'bottom-start' }"
       >
-        <UAvatar
-          :src="user?.user_metadata.picture || user_profile?.avatar_url"
-          :alt="user_profile?.name"
-        />
+        <UAvatar :src="user_profile?.avatar_url" :alt="user_profile?.name" />
 
         <template #account="{ item }">
           <div class="text-left">
