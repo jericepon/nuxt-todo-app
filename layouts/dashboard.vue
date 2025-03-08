@@ -4,7 +4,7 @@ import { useProfileStore } from "~/store/profile";
 
 const client = useSupabaseClient();
 const user = useSupabaseUser();
-const { setProfile } = useProfileStore();
+const { user_profile } = storeToRefs(useProfileStore());
 
 let sideBarOptions = {
   onToggleSideBar: (isOpen: boolean) => {
@@ -27,7 +27,7 @@ const {
 });
 
 watchEffect(() => {
-  if (profile.value) setProfile(profile.value);
+  user_profile.value = profile.value;
 });
 </script>
 

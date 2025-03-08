@@ -16,6 +16,8 @@ definePageMeta({
   layout: "dashboard",
 });
 
+const submitting = ref(false);
+
 const { notify } = useNotifications();
 const { setProfile, user_profile } = useProfileStore();
 
@@ -30,17 +32,18 @@ const handleUpdateProfile = ({ name, avatar_url }: FormData) =>
     method: "POST",
     body: { name, avatar_url },
   }).then(({ data, error }) => {
-    reloadNuxtApp();
     return { data, error };
   });
 
 const handleSubmit = ({ name, avatar_url, image }: FormData) => {
+  submitting.value = true;
   if (image) {
     return handleUploadAvatar(image).then(({ avatar_url }) => {
       handleUpdateProfile({ name, avatar_url }).then(({ data, error }) => {
         error && notify({ type: "error", description: error.message });
         if (data?.length) {
           setProfile(data[0]);
+          submitting.value = false;
           notify({ type: "success", description: "Profile updated" });
         }
       });
@@ -50,6 +53,7 @@ const handleSubmit = ({ name, avatar_url, image }: FormData) => {
       error && notify({ type: "error", description: error.message });
       if (data?.length) {
         setProfile(data[0]);
+        submitting.value = false;
         notify({ type: "success", description: "Profile updated" });
       }
     });
@@ -64,7 +68,7 @@ const handleSubmit = ({ name, avatar_url, image }: FormData) => {
       alt=""
       srcset=""
     />
-    <SettingsForm v-if="user_profile" @submit="handleSubmit" :profile="user_profile" />
+    <SettingsForm v-if="user_profile" @submit="handleSubmit" :profile="user_profile" :submitting />
   </div>
 </template>
 

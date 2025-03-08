@@ -6,8 +6,8 @@ import { useProfileStore } from "~/store/profile";
 const route = useRoute();
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
-const { user_profile } = useProfileStore();
 const colorMode = useColorMode();
+const { user_profile } = storeToRefs(useProfileStore());
 
 const { clear } = useClearOnLogout();
 
@@ -72,7 +72,10 @@ const items = ref([
         :ui="{ item: { disabled: 'cursor-text select-text' } }"
         :popper="{ placement: 'bottom-start' }"
       >
-        <UAvatar :src="user_profile?.avatar_url" :alt="user_profile?.name" />
+        <UAvatar
+          :src="user_profile?.avatar_url || user?.user_metadata.picture"
+          :alt="user_profile?.name"
+        />
 
         <template #account="{ item }">
           <div class="text-left">

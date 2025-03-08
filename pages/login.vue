@@ -21,7 +21,6 @@ const schema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(8, "Must be at least 8 characters"),
 });
-console.log(redirectTo);
 
 const state = reactive<z.infer<typeof schema>>({
   email: "",
