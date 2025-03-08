@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      BASE_URL: process.env.BASE_URL || 'https://frontend-test-nuxt.netlify.app',
+      BASE_URL: process.env.BASE_URL,
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_KEY: process.env.SUPABASE_KEY,
     },
