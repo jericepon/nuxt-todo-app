@@ -6,10 +6,16 @@ const client = useSupabaseClient();
 const user = useSupabaseUser();
 const { user_profile } = storeToRefs(useProfileStore());
 
+let isOpen = ref(true);
+let baseWidth = ref("100%");
+
 let sideBarOptions = {
-  onToggleSideBar: (isOpen: boolean) => {
-    const baseWidth = `${isOpen ? 240 : 72}px`;
-    document.documentElement.style.setProperty("--base-layout-width", `calc(100% - ${baseWidth})`);
+  onToggleSidebar: () => {
+    isOpen.value = !isOpen.value;
+
+    baseWidth.value = `${isOpen.value ? 240 : 72}px`;
+
+    updateScreenWidth();
   },
 };
 
@@ -26,15 +32,42 @@ const {
   return data;
 });
 
+const updateScreenWidth = () => {
+  window.innerWidth < 1024
+    ? (baseWidth.value = "100%")
+    : (baseWidth.value = `calc(100% - ${isOpen.value ? 240 : 72}px)`);
+  document.documentElement.style.setProperty("--base-layout-width", baseWidth.value);
+};
+
 watchEffect(() => {
   user_profile.value = profile.value;
+});
+
+onMounted(() => {
+  window.innerWidth < 1024 && (isOpen.value = false);
+
+  window.addEventListener("resize", () => {
+    isOpen.value = window.innerWidth >= 1024;
+
+    updateScreenWidth();
+  });
 });
 </script>
 
 <template>
-  <LayoutSideBar class="fixed z-20 transition-[width]" v-bind="sideBarOptions" />
+  <LayoutSideBar
+    class="fixed z-20 transition-[width] bg-white transition-all"
+    :class="{
+      'w-60': isOpen,
+      'w-60 lg:w-[72px]': !isOpen,
+      '-translate-x-full lg:-translate-x-0': !isOpen,
+    }"
+    v-bind="sideBarOptions"
+    :is-open
+  />
   <LayoutNavBar
     class="fixed top-0 z-10 left-auto right-0 w-full max-w-[var(--base-layout-width)] transition-all"
+    @toggle-sidebar="sideBarOptions.onToggleSidebar"
   />
   <main
     class="flex flex-grow flex-col mt-[48px] ml-auto w-full max-w-[var(--base-layout-width)] dark:bg-gray-900 transition-all"

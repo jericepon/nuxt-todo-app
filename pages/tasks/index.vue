@@ -11,6 +11,8 @@ definePageMeta({
   layout: "dashboard",
 });
 
+const loading = ref(false);
+
 const { notify } = useNotifications();
 
 const columns = [
@@ -41,25 +43,31 @@ const { data: tasks, refresh } = useAsyncData(
 const handleDuplicate = async (task: Task) => {
   const { title, description, priority, completed } = task;
   const body = { description, priority, completed, title: `(Copy) of ${title}` };
-
+  loading.value = true;
   const { data, error } = await $fetch("/api/task/create", { method: "POST", body });
   if (error) {
     notify({ type: "error", description: error.message });
     return;
   }
-  notify({ type: "success", description: "Task duplicated successfully" });
-  await refresh();
+  await refresh().then(() => {
+    loading.value = false;
+    notify({ type: "success", description: "Task duplicated successfully" });
+  });
 };
 
 const handleDelete = async (id: Task) => {
   const { data, error } = await $fetch("/api/task/delete", { method: "POST", body: { id } });
+  loading.value = true;
 
   if (error) {
     notify({ type: "error", description: error.message });
     return;
   }
 
-  await refresh().then(() => notify({ type: "success", description: "Task deleted successfully" }));
+  await refresh().then(() => {
+    loading.value = false;
+    notify({ type: "success", description: "Task deleted successfully" });
+  });
 };
 
 const handleTaskComplete = async (task: Task) => {
@@ -86,6 +94,7 @@ const handleTaskComplete = async (task: Task) => {
       class="col-span-3"
       searchable
       paginable
+      :loading
       :columns
       :rows="tasks?.data || []"
       :selected="[]"

@@ -16,7 +16,18 @@ const props = defineProps({
 
 const schema = z.object({
   name: z.string().nonempty("Name is required"),
-  avatar_url: z.string().optional(),
+  avatar_url: z
+    .string()
+    .refine(
+      (filePath) => {
+        const validExtensions = [".jpeg", ".jpg", ".png"];
+        const isValid = validExtensions.some((ext) => filePath.endsWith(ext));
+        if (!filePath) return true;
+        return isValid;
+      },
+      { message: "Only .jpg, .jpeg, and .png formats are supported." }
+    )
+    .optional(),
   image: z.string().optional(),
 });
 
@@ -54,7 +65,7 @@ watch(
       <UInput v-model="state.name" />
     </UFormGroup>
     <UFormGroup label="Avatar URL" name="avatar_url">
-      <UInput type="file" size="sm" icon="i-heroicons-folder" @change="setImage" />
+      <UInput v-model="state.avatar_url" type="file" size="sm" icon="i-heroicons-folder" @change="setImage" />
     </UFormGroup>
     <div class="flex w-full justify-end space-x-4">
       <UButton color="gray" variant="solid" to="/"> Cancel </UButton>

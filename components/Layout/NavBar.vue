@@ -3,6 +3,8 @@ import { useRoute } from "vue-router";
 import { computed } from "vue";
 import { useProfileStore } from "~/store/profile";
 
+const emit = defineEmits(["toggle-sidebar"]);
+
 const route = useRoute();
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -27,20 +29,6 @@ const items = ref([
   [
     { label: "ben@example.com", slot: "account", disabled: true },
     { label: "Divider", icon: "i-heroicons-user", slot: "divider", class: "p-0", disabled: true },
-    {
-      label: "Divider",
-      icon: "i-heroicons-user",
-      slot: "divider",
-      class: "p-0 md:hidden",
-      disabled: true,
-    },
-    {
-      label: "Tasks",
-      icon: "i-heroicons-clipboard-document-list",
-      class: "md:hidden",
-      to: "/tasks",
-    },
-    { label: "Analytics", icon: "i-heroicons-chart-bar", class: "md:hidden", to: "/analytics" },
     { label: "Settings", icon: "i-heroicons-cog", to: "/settings" },
     { label: "", icon: "i-lucide-sun-moon", slot: "color-mode" },
     { label: "Divider", icon: "i-heroicons-user", slot: "divider", class: "p-0", disabled: true },
@@ -60,10 +48,11 @@ const items = ref([
 
 <template>
   <header
-    class="bg-white dark:bg-gray-900 flex items-center justify-between max-h-12 h-full px-4 sm:px-6 lg:px-8 py-1 border-b border-(--ui-border) dark:border-gray-800"
+    class="bg-white dark:bg-gray-900 flex items-center justify-between max-h-12 h-full px-8 py-1 border-b border-(--ui-border) dark:border-gray-800"
   >
     <nav class="flex items-center justify-between flex-grow">
       <div class="flex justify-center items-center">
+        <DashboardSidebarToggle is-open class="mr-4 lg:hidden" @click="emit('toggle-sidebar')" icon="i-lucide-menu" />
         <span class="capitalize">{{ pageTitle }}</span>
       </div>
 

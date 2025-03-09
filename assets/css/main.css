@@ -9,11 +9,15 @@ html,
 }
 
 :root {
-  --base-layout-width: calc(100% - 240px);
+  --base-layout-width: calc(100%);
   --app-background: var(--color-white);
   --animate-fade-in: fade-in 1s ease-in 1;
   .dark {
     --app-background: var(--color-gray-900);
+  }
+
+  @media (min-width: 1024px) {
+    --base-layout-width: calc(100% - 240px);
   }
 }
 

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-const user = useSupabaseUser();
+import { useProfileStore } from "~/store/profile";
+
+const { user_profile } = storeToRefs(useProfileStore());
 const currentTimeOfDay = computed(() => {
   const hours = new Date().getHours();
   if (hours < 12) return "morning";
@@ -13,12 +15,12 @@ const currentTime = computed(() => {
 </script>
 
 <template>
-  <UCard class="min-h-[100px] col-span-3">
+  <UCard class="min-h-[100px]">
     <template #default>
-      <div class="flex">
+      <div class="flex flex-col lg:flex-row gap-4">
         <div class="flex-grow">
           <h2 class="text-lg font-semibold">
-            Good {{ currentTimeOfDay }}, {{ user?.user_metadata.name }}
+            Good {{ currentTimeOfDay }}, {{ user_profile?.name }}
           </h2>
           <p class="text-sm text-(--ui-text-muted)">
             Here's what's happening with your tasks today

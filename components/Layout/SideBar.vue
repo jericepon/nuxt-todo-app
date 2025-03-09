@@ -1,34 +1,58 @@
 <script setup lang="ts">
-import { useAuthStore } from "~/store/auth";
 import logo from "~/assets/img/logo.svg";
 
-const isOpen = ref(true);
-const emit = defineEmits(["toggle-side-bar"]);
+const props = defineProps({
+  isOpen: {
+    type: Boolean,
+    default: false,
+  },
+});
+const emit = defineEmits(["toggle-sidebar"]);
 
 const links = [
-  { label: "Dashboard", icon: "i-heroicons-home", to: "/" },
-  { label: "Tasks", icon: "i-heroicons-clipboard-document-list", to: "/tasks" },
-  { label: "Analytics", icon: "i-heroicons-chart-bar", to: "/analytics" },
+  {
+    label: "Dashboard",
+    icon: "i-heroicons-home",
+    to: "/",
+    click: () => window.innerWidth < 1024 && emit("toggle-sidebar"),
+  },
+  {
+    label: "Tasks",
+    icon: "i-heroicons-clipboard-document-list",
+    to: "/tasks",
+    click: () => window.innerWidth < 1024 && emit("toggle-sidebar"),
+  },
+  {
+    label: "Analytics",
+    icon: "i-heroicons-chart-bar",
+    to: "/analytics",
+    click: () => window.innerWidth < 1024 && emit("toggle-sidebar"),
+  },
 ];
 
 const toggleSideBar = () => {
-  isOpen.value = !isOpen.value;
-  emit("toggle-side-bar", isOpen.value);
+  emit("toggle-sidebar");
 };
 </script>
 
 <template>
   <aside
     class="border-r border-(--ui-border) dark:bg-gray-900 dark:border-gray-800 px-4 pb-4 h-full"
-    :class="{ 'w-60': isOpen, 'w-[72px]': !isOpen }"
   >
-    <div class="h-12 items-center flex mb-4 sm:mb-6 lg:mb-8 cursor-pointer">
+    <div class="h-12 items-center flex mb-8 cursor-pointer" @click="navigateTo('/')">
       <UAvatar size="md" :src="logo" class="mr-2" />
       <span
         class="text-gray-900 dark:text-white text-lg font-medium animate-[fade-in_500ms_ease-in_1]"
-        :class="{ hidden: !isOpen }"
+        :class="{ 'lg:hidden': !isOpen }"
         >Todo App</span
       >
+      <DashboardSidebarToggle
+        :is-open="isOpen"
+        @toggle-sidebar="toggleSideBar"
+        icon="i-heroicons-x-mark"
+        variant="link"
+        class="w-8 h-8 lg:hidden ml-auto"
+      />
     </div>
     <UVerticalNavigation
       :ui="{
@@ -43,7 +67,7 @@ const toggleSideBar = () => {
       :links
     >
       <template #default="{ link }">
-        <span :class="{ hidden: !isOpen }" class="animate-[fade-in_500ms_ease-in_1]">{{
+        <span :class="{ 'lg:hidden': !isOpen }" class="animate-[fade-in_500ms_ease-in_1]">{{
           link.label
         }}</span>
       </template>
@@ -55,16 +79,11 @@ const toggleSideBar = () => {
       </template>
     </UVerticalNavigation>
     <!-- SideBar Toggle -->
-    <UButton
+    <DashboardSidebarToggle
+      :is-open="isOpen"
+      @toggle-sidebar="toggleSideBar"
       :icon="`i-heroicons-chevron-${isOpen ? 'left' : 'right'}`"
-      :ui="{
-        rounded:
-          'w-8 h-8 p-0 flex justify-center items-center absolute top-0 bottom-0 m-auto left-auto -right-[15px] scale-[0.7] z-20',
-      }"
-      variant="solid"
-      color="gray"
-      size="sm"
-      @click="toggleSideBar"
+      class="absolute top-0 bottom-0 m-auto left-auto -right-[15px] scale-[0.7] w-8 h-8 hidden lg:block"
     />
   </aside>
 </template>
